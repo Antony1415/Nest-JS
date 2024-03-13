@@ -11,8 +11,10 @@ export class AppController {
     return this.appService.getHello();
   }
 
-  // We can't use Get('/:variable') if the route have child/tree route. e.g /detail or /ticket/1
-  // Because, Get('/:variable') will replacing the child route. e.g @Get('/:name') will replacing /detail --> /name
+  // We can't use Get('/:variable') under dynamic route, if the route have child/tree route. e.g /detail or /ticket/1
+  // Because, Get('/:variable') will replacing the child route. e.g /detail and @Get('/:name') will replacing /detail to /name
+  // if we have static route like {host}/detail, we need declare it above dynamic params route
+  // because express/nest read the code from top to the bottom and it'll execute the first route it finds
   // Param example: localhost:3000/detail    ---> (we can get the 'detail' using @Get('localhost:3000/:variableName') )
   // Param example: localhost:3000/ticket/1    ---> (we can get the '1' using @Get('localhost:3000/ticket/:variableName') )
   // @Get('/:variableName')
@@ -21,8 +23,8 @@ export class AppController {
   // }
 
   // we can't use both Get() and Get(@Query) because it's was a same route. So, it'll be execute first route that is Get()
-  // Query example:  localhost:3000?name='Antony'&age=20   ---> (use & to add more field or query)
-  // Query example:  localhost:3000/ticket?name='Antony'&price=50000   ---> (use & to add more field or query)
+  // Query example:  localhost:3000?name='Antony'&age=20   ---> (use '&' to add more field or query)
+  // Query example:  localhost:3000/ticket?name='Antony'&price=50000   ---> (use '&' to add more field or query)
   // @Get()
   // getHelloQUery(@Query('variableName') variableName: string) {
   //   return `Query: ${variableName}`
